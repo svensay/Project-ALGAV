@@ -16,17 +16,17 @@ public class main{
 		System.out.println("1 eg 1: " + eg((byte)1,(byte)1));
 		System.out.println("8 eg 7: " + eg((byte)8,(byte)7));
 
-		Arbre a = new Arbre((byte)2 , 
-			new Arbre((byte)5,
-				new Arbre((byte)10, 
-					new Arbre((byte)12,null,null),
-					new Arbre((byte)15,null,null)),
-				new Arbre((byte)13,
-					new Arbre((byte)14,null,null),
+		ArbreBinaire a = new ArbreBinaire((byte)2 , 
+			new ArbreBinaire((byte)5,
+				new ArbreBinaire((byte)10, 
+					new ArbreBinaire((byte)12,null,null),
+					new ArbreBinaire((byte)15,null,null)),
+				new ArbreBinaire((byte)13,
+					new ArbreBinaire((byte)14,null,null),
 					null)),
-			new Arbre((byte)6,
-				new Arbre((byte)8,null,null),
-				new Arbre((byte)7,null,null)));
+			new ArbreBinaire((byte)6,
+				new ArbreBinaire((byte)8,null,null),
+				new ArbreBinaire((byte)7,null,null)));
 		a.explorer();
 		System.out.println();
 	}

@@ -1,7 +1,7 @@
 import java.util.*;
 public class TasMinA{
-	Arbre a;
-	public TasMinA(Arbre a){
+	ArbreBinaire a;
+	public TasMinA(ArbreBinaire a){
 		this.a = a;
 	}
 	

@@ -1,10 +1,19 @@
 import java.util.*;
 public class TasMinT{
-	byte[] tab;
-	public TasMinT(byte[] tab){
+	List<Byte> tab;
+	public TasMinT(List<Byte> tab){
 		this.tab = tab;
 	}
 
+	/**
+	* Echange les valeurs de x et y
+	*/
+	public void swap(byte x, byte y){
+		byte tmp = x;
+		x = y;
+		y = tmp;
+	}
+	
 	/**
 	*	Supprime l'élément de clé minimal du TasMin
 	*/
