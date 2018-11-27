@@ -24,6 +24,27 @@ public class TasMinTableau<T extends Comparable> implements ITasMin<T> {
         this.array.set(0, last);
 
         //TODO:trier la tête du tas
+        /*
+        int i = 0;
+        while(((2*i)+1) < this.array.size() && ((2*i)+2) < this.array.size() && i < this.array.size())
+        {
+            if(last.compareTo(this.array.get((2*i)+1)) == -1)//last inferieur au fils gauche
+            {
+                this.array.set(i,this.array.get((2*i)+1));
+                i = (2*i)+1;
+            }
+            else if(this.array.get((2*i)+2).compareTo(last) == -1)//fils droit inferieur a last
+            {
+                this.array.set(i,this.array.get((2*i)+2));
+                i = (2*i)+2;
+            }else{
+                break;
+            }
+        }
+        this.array.set(i,last);
+        */
+
+
         return this;
     }
 
