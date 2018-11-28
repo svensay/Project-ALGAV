@@ -3,7 +3,7 @@ package algav.tasmin;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TasMinTableau<T extends Comparable> implements ITasMin<T> {
+public class TasMinTableau<T extends Comparable<? super T>> implements ITasMin<T> {
 
     private ArrayList<T> array;
 
@@ -18,13 +18,13 @@ public class TasMinTableau<T extends Comparable> implements ITasMin<T> {
      * @return tas courant
      */
     @Override
-    public TasMinTableau supprMin()
+    public TasMinTableau<T> supprMin()
     {
         T last = this.array.remove(this.array.size() - 1);
         this.array.set(0, last);
 
         //TODO:trier la tête du tas
-        /*
+
         int i = 0;
         while(((2*i)+1) < this.array.size() && ((2*i)+2) < this.array.size() && i < this.array.size())
         {
@@ -42,8 +42,6 @@ public class TasMinTableau<T extends Comparable> implements ITasMin<T> {
             }
         }
         this.array.set(i,last);
-        */
-
 
         return this;
     }
@@ -55,7 +53,7 @@ public class TasMinTableau<T extends Comparable> implements ITasMin<T> {
      * @return le tas courant
      */
     @Override
-    public TasMinTableau ajout(T cle)
+    public TasMinTableau<T> ajout(T cle)
     {
         if (this.array.contains(cle))
         {
@@ -100,7 +98,7 @@ public class TasMinTableau<T extends Comparable> implements ITasMin<T> {
      * @return
      */
     @Override
-    public TasMinTableau union(ITasMin tas)
+    public TasMinTableau<T> union(ITasMin<T> tas)
     {
         tas.getListe().forEach((cle) ->
         {

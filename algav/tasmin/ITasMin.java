@@ -14,13 +14,13 @@ import java.util.List;
  */
 public interface ITasMin<T> {
 
-    public ITasMin supprMin();
+    public ITasMin<T> supprMin();
 
-    public ITasMin ajout(T cle);
+    public ITasMin<T> ajout(T cle);
 
     public void consIter(List<T> cles);
 
-    public ITasMin union(ITasMin tas);
+    public ITasMin<T> union(ITasMin<T> tas);
 
     public List<T> getListe();
 }
