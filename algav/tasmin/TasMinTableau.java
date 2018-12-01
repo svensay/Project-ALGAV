@@ -28,6 +28,11 @@ public class TasMinTableau<T extends Comparable<? super T>> implements ITasMin<T
         return this;
     }
 
+    /**
+     * Percoler vers le haut à partir du sommet i
+     *
+     * @param i sommet
+     */
     private void percolerHaut(int id) // pour ajouts
     {
         T cle = this.array.get(id);
@@ -126,7 +131,7 @@ public class TasMinTableau<T extends Comparable<? super T>> implements ITasMin<T
     {
         this.array = new ArrayList<>(cles);
 
-        int profondeurMax = (int) (Math.log(cles.size()) / Math.log(2)) - 1;
+        int profondeurMax = log2(cles.size()) - 1;
         // Pour chaque niveau de l'arbre (à partir de l'avant dernier)
         // complexite sans percolation : O(profondeurMax * 2^profondeurMax) < O(n)
         while (profondeurMax >= 0)
@@ -177,5 +182,51 @@ public class TasMinTableau<T extends Comparable<? super T>> implements ITasMin<T
     public final List<T> getListe()
     {
         return new ArrayList<>(this.array);
+    }
+
+    /**
+     * Fonction log2(x)
+     *
+     * @param nombre
+     * @return log en base 2 du nombre
+     */
+    private int log2(int nombre)
+    {
+        //return (int) (Math.log(nombre) / Math.log(2));
+        // solution ci-dessous 10 fois plus rapide :
+        // https://stackoverflow.com/questions/3305059/
+        int log = 0;
+        if ((nombre & 0xffff0000) != 0)
+        {
+            nombre >>>= 16;
+            log = 16;
+        }
+        if (nombre >= 256)
+        {
+            nombre >>>= 8;
+            log += 8;
+        }
+        if (nombre >= 16)
+        {
+            nombre >>>= 4;
+            log += 4;
+        }
+        if (nombre >= 4)
+        {
+            nombre >>>= 2;
+            log += 2;
+        }
+        return log + (nombre >>> 1);
+    }
+
+    /**
+     * Indique sur le tas est vide
+     *
+     * @return tas vide ?
+     */
+    @Override
+    public boolean estVide()
+    {
+        return this.array.isEmpty();
     }
 }

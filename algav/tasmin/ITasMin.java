@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package algav.tasmin;
 
 import java.util.List;
@@ -23,4 +18,6 @@ public interface ITasMin<T> {
     public ITasMin<T> union(ITasMin<T> tas);
 
     public List<T> getListe();
+
+    public boolean estVide();
 }
