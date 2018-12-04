@@ -2,6 +2,7 @@ package algav;
 
 import algav.tasmin.ITasMin;
 import algav.tasmin.TasMinTableau;
+import algav.tasmin.TasMinArbre;
 import algav.Cle128;
 
 import java.io.BufferedReader;
@@ -15,8 +16,10 @@ import java.util.List;
 
 public class Algav {
 
+    private static boolean isTab = false; // Differentier les strucutre de Tableau et Arbre
+
     /**
-    *   Lit le fichier dans path et l'ajoute dans une structure de TasMinTableau et calcule le temps de ConstIter en nano seconde
+    *   Lit le fichier dans path et l'ajoute dans une structure de ITasMin et calcule le temps de ConstIter en nano seconde
     *
     *   @param path Chemin vers le fichier de lecture
     *
@@ -27,7 +30,12 @@ public class Algav {
             BufferedReader br = new BufferedReader(new FileReader(path));
             String sCurrentLine;
             List<Cle128> l = new ArrayList<>();
-            ITasMin<Cle128> res = new TasMinTableau<>();
+            ITasMin<Cle128> res;
+            if(isTab){
+                res = new TasMinTableau<>();
+            }else{
+                res = new TasMinArbre<>();
+            }
             while ((sCurrentLine = br.readLine()) != null) {
                 l.add(new Cle128(sCurrentLine));
             }
@@ -61,6 +69,13 @@ public class Algav {
         return -1;
     }
 
+    /**
+    *
+    * Enregistre les donnees de temps par rapport au nombre de vle dans un fichier path
+    *
+    * @param temps tableau du temps lors de l'execution de chaque type de fichier(indice 0 temps pour 100cle, indice 1 temps pour 200cle ..etc)
+    * @param path Chemin ou on enrengistre les donnees
+    */
     public static void writeTime(int temps[],String path){
         try{
             BufferedWriter bw = new BufferedWriter(new FileWriter(path));
@@ -132,7 +147,7 @@ public class Algav {
     }
 
     /**
-    *   Lit le fichier dans path et l'ajoute dans une structure de TasMinTableau et calcule le temps de Union en nano seconde avec t
+    *   Lit le fichier dans path et l'ajoute dans une structure de ITasMin et calcule le temps de Union en nano seconde avec t
     *
     *   @param t Tas min avec qui on fait l'union
     *   @param path Chemin vers le fichier de lecture
@@ -144,7 +159,12 @@ public class Algav {
             BufferedReader br = new BufferedReader(new FileReader(path));
             String sCurrentLine;
             List<Cle128> l = new ArrayList<>();
-            ITasMin<Cle128> t2 = new TasMinTableau<>();
+            ITasMin<Cle128> t2;
+            if(isTab){
+                t2 = new TasMinTableau<>();
+            }else{
+                t2 = new TasMinArbre<>();
+            }
             while ((sCurrentLine = br.readLine()) != null) {
                 l.add(new Cle128(sCurrentLine));
             }
@@ -169,14 +189,33 @@ public class Algav {
     public static void averageUnion(String path){
         File folder = new File(path);
         int temps[] = new int[8];
-        ITasMin<Cle128> t100 = new TasMinTableau<>();
-        ITasMin<Cle128> t200 = new TasMinTableau<>();
-        ITasMin<Cle128> t500 = new TasMinTableau<>();
-        ITasMin<Cle128> t1000 = new TasMinTableau<>();
-        ITasMin<Cle128> t5000 = new TasMinTableau<>();
-        ITasMin<Cle128> t10000 = new TasMinTableau<>();
-        ITasMin<Cle128> t20000 = new TasMinTableau<>();
-        ITasMin<Cle128> t50000 = new TasMinTableau<>();
+            ITasMin<Cle128> t100;
+            ITasMin<Cle128> t200;
+            ITasMin<Cle128> t500;
+            ITasMin<Cle128> t1000;
+            ITasMin<Cle128> t5000;
+            ITasMin<Cle128> t10000;
+            ITasMin<Cle128> t20000;
+            ITasMin<Cle128> t50000;
+        if(isTab){
+            t100 = new TasMinTableau<>();
+            t200 = new TasMinTableau<>();
+            t500 = new TasMinTableau<>();
+            t1000 = new TasMinTableau<>();
+            t5000 = new TasMinTableau<>();
+            t10000 = new TasMinTableau<>();
+            t20000 = new TasMinTableau<>();
+            t50000 = new TasMinTableau<>();
+        }else{
+            t100 = new TasMinArbre<>();
+            t200 = new TasMinArbre<>();
+            t500 = new TasMinArbre<>();
+            t1000 = new TasMinArbre<>();
+            t5000 = new TasMinArbre<>();
+            t10000 = new TasMinArbre<>();
+            t20000 = new TasMinArbre<>();
+            t50000 = new TasMinArbre<>();
+        }
         String route;
         for (File f : folder.listFiles()) {
             route = path + f.getName();
