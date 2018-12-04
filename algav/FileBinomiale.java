@@ -1,3 +1,7 @@
+package algav;
+
+import algav.Cle128;
+
 import java.util.*;
 public class FileBinomiale {
 	List<TournoiBinomial> l;
@@ -6,18 +10,19 @@ public class FileBinomiale {
 	}
 
 	public boolean estVide(){
-		return true;
+		return l.isEmpty();
 	}
 
 	public TournoiBinomial minDeg(){
-		return null;
+		return l.get(l.size()-1);
 	}
 
 	public FileBinomiale reste(){
-		return null;
+		return new FileBinomiale(l.subList(0, l.size()-1));
 	}
 
 	public FileBinomiale AjoutMin(TournoiBinomial t){
-		return null;
+		l.add(t);
+		return this;
 	}
 }
