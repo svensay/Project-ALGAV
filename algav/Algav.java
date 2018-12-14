@@ -4,6 +4,8 @@ import algav.tasmin.ITasMin;
 import algav.tasmin.TasMinTableau;
 import algav.tasmin.TasMinArbre;
 import algav.Cle128;
+import algav.FileBinomiale;
+import algav.TournoiBinomial;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -283,7 +285,29 @@ public class Algav {
         System.out.println(test);
         //System.out.println(timeConstIter(args[0]));
         // averageConstIter(args[0]);
-        averageUnion(args[0]);
+        //averageUnion(args[0]);
+        FileBinomiale<Integer> f = new FileBinomiale<>();
+        List<Integer> l = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+			l.add(i);
+		}
+        FileBinomiale<Integer> fb = new FileBinomiale<>();
+        List<Integer> al = new ArrayList<>();
+        for (int i = 20; i < 40; i++) {
+			al.add(i);
+		}
+        f.ConstIter(l);
+        fb.ConstIter(al);
+        System.out.println("-----------------");
+        System.out.print(f);
+        f.SupprMin();
+        System.out.println("-----------------");
+        System.out.print(f);
+        System.out.println("--------------------");
+        System.out.println(fb);
+        f.Union(fb);
+        System.out.println("-----------------"); 
+        System.out.print(f);
     }
 
 }
