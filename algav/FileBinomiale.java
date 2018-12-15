@@ -37,26 +37,28 @@ public class FileBinomiale<T extends Comparable<? super T>> {
 			}
 			TournoiBinomial<T> t1 = this.minDeg();
 			TournoiBinomial<T> t2 = f.minDeg();
+			
 			if(t1.Degre() < t2.Degre()){
-				return this.reste().Union(f).AjoutMin(t1);
+				return this.reste().union(f).AjoutMin(t1);
 			}
 			if(t2.Degre() < t1.Degre()){
-				return f.reste().Union(this).AjoutMin(t2);
+				return f.reste().union(this).AjoutMin(t2);
 			}
 			if(t1.Degre() == t2.Degre()){
 				return this.reste().UFret(f.reste(),t1.Union2Tid(t2));
 			}
 		}else{
 			if(this.estVide()){
-				return t.File().Union(f);
+				return t.File().union(f);
 			}
 			if(f.estVide()){
-				return t.File().Union(this);
+				return t.File().union(this);
 			}
 			TournoiBinomial<T> t1 = this.minDeg();
 			TournoiBinomial<T> t2 = f.minDeg();
+			
 			if(t.Degre() < t1.Degre() && t.Degre() < t2.Degre()){
-				return this.Union(f).AjoutMin(t);
+				return this.union(f).AjoutMin(t);
 			}
 			if(t.Degre() == t1.Degre() && t.Degre() == t2.Degre()){
 				return this.reste().UFret(f.reste(),t1.Union2Tid(t2)).AjoutMin(t);
@@ -71,17 +73,18 @@ public class FileBinomiale<T extends Comparable<? super T>> {
 		return null;
 	}
 
-	public FileBinomiale<T> Union(FileBinomiale<T> l){
-		return UFret(l,new TournoiBinomial<T>());
+	public FileBinomiale<T> union(FileBinomiale<T> l1){		
+		return UFret(l1,new TournoiBinomial<T>());
 	}
 
-	public void Ajout(TournoiBinomial<T> t){
+	public FileBinomiale<T> ajout(TournoiBinomial<T> t){
 		FileBinomiale<T> tmp = new FileBinomiale<T>();
 		tmp.AjoutMin(t);
-		l = this.Union(tmp).l;
+		l = this.union(tmp).l;
+		return this;
 	}
 
-	public void SupprMin(){
+	public FileBinomiale<T> supprMin(){
 		int min = 0;
 		for (int i = 1; i < l.size();i++) {
 			if(l.get(i).v.compareTo(l.get(min).v) < 0){
@@ -90,19 +93,22 @@ public class FileBinomiale<T extends Comparable<? super T>> {
 		}
 		FileBinomiale<T> l1 = l.get(min).Decapite();
 		l.remove(min);
-		l = this.Union(l1).l;
+		l = this.union(l1).l;
+		return this;
 	}
 	
-	public void ConstIter(List<T> cles) {
+	public void consIter(List<T> cles) {
 		for (T c : cles) {
 			TournoiBinomial<T> tmp = new TournoiBinomial<T>(c);
-			this.Ajout(tmp);
+			this.ajout(tmp);
 		}
 	}
 	public String toString() {
 		String str = "";
-		for (TournoiBinomial<T> t : l) {
-			str += t.toString() + "\n";
+		if(!l.isEmpty()) {
+			for (TournoiBinomial<T> t : l) {
+				str += t.toString() + "\n";
+			}
 		}
 		return str;
 	}

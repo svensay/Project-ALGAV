@@ -5,19 +5,15 @@ import java.util.*;
 public class TournoiBinomial<T extends Comparable<? super T>>{
 
 	T v; //cle128
-	List<TournoiBinomial<T>> l;
+	LinkedList<TournoiBinomial<T>> l;
 
-	public TournoiBinomial(T v, List<TournoiBinomial<T>> l){
-		this.v = v;
-		this.l =l;
-	}
 	public TournoiBinomial(T v){
 		this.v = v;
-		this.l = new ArrayList<>();
+		this.l = new LinkedList<>();
 	}
 	public TournoiBinomial(){
 		this.v = null;
-		this.l = new ArrayList<>();
+		this.l = new LinkedList<>();
 	}
 	public boolean EstVide(){
 		return l.isEmpty() && v == null;
@@ -29,10 +25,10 @@ public class TournoiBinomial<T extends Comparable<? super T>>{
 
 	public TournoiBinomial<T> Union2Tid(TournoiBinomial<T> t){
 		if(this.v.compareTo(t.v) < 0){
-			l.add(t);
+			l.addFirst(t);
 			return this;
 		}
-		t.l.add(this);
+		t.l.addFirst(this);
 		return t;
 	}
 
@@ -54,8 +50,10 @@ public class TournoiBinomial<T extends Comparable<? super T>>{
 		while(!file.isEmpty()) {
 			t = file.pop();
 			str += t.v + " ";
-			for (TournoiBinomial<T> tb : t.l) {
-				file.add(tb);
+			if(!t.l.isEmpty()) {
+				for (TournoiBinomial<T> tb : t.l) {
+					file.add(tb);
+				}
 			}
 		}
 		return str;
