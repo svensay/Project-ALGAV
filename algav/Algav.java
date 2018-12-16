@@ -5,6 +5,7 @@ import algav.tasmin.TasMinTableau;
 import algav.tasmin.TasMinArbre;
 import algav.Cle128;
 import algav.FileBinomiale;
+//import algav.md5.MD5;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Algav {
@@ -419,6 +421,30 @@ public class Algav {
 		writeTime(temps, "averageUnionFileBinomiale.csv");
 	}
 
+	public static List<String> listShak(String path) {
+		File folder = new File(path);
+		String[] tab = folder.list();
+		Arrays.sort(tab);
+		String route;
+		List<String> l = new ArrayList<>();
+		try {
+			for (String str : tab) {
+				route = path + str;
+				BufferedReader br = new BufferedReader(new FileReader(route));
+				String sCurrentLine;
+				while ((sCurrentLine = br.readLine()) != null) {
+					if(!l.contains(sCurrentLine)) {
+						l.add(sCurrentLine);	
+					}
+				}
+				br.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return l;
+	}
+
 	public static void main(String[] args) {
 		Cle128 test1 = new Cle128("0x9c1f03a0d9cf510f2765bd0f226ff5dc");
 		Cle128 test2 = new Cle128("0x9c1f03a0d9cf510f2765bd0f226ff5dc");
@@ -444,8 +470,13 @@ public class Algav {
 		// System.out.println(timeConstIter(args[0]));
 		// averageConstIterTasMin(args[0]);
 		// averageUnionTasMin(args[0]);
-		 //averageConstIterFileBinomiale(args[0]);
-		 //averageUnionFileBinomiale(args[0]);
+		// averageConstIterFileBinomiale(args[0]);
+		// averageUnionFileBinomiale(args[0]);
+		// System.out.println(MD5.get("Wikipedia, l'encyclopedie libre et gratuite"));
+		List<String> l = listShak(args[0]);
+		for (String str : l) {
+			System.out.print(str + " ");
+		}
 	}
 
 }
