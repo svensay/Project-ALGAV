@@ -5,35 +5,35 @@ import java.util.*;
 public class TournoiBinomial<T extends Comparable<? super T>>{
 
 	T v; //cle128
-	LinkedList<TournoiBinomial<T>> l;
+	LinkedList<TournoiBinomial<T>> fils;
 
 	public TournoiBinomial(T v){
 		this.v = v;
-		this.l = new LinkedList<>();
+		this.fils = new LinkedList<>();
 	}
 	public TournoiBinomial(){
 		this.v = null;
-		this.l = new LinkedList<>();
+		this.fils = new LinkedList<>();
 	}
 	public boolean EstVide(){
-		return l.isEmpty() && v == null;
+		return fils.isEmpty() && v == null;
 	}
 
 	public int Degre(){
-		return l.size();
+		return fils.size();
 	}
 
 	public TournoiBinomial<T> Union2Tid(TournoiBinomial<T> t){
 		if(this.v.compareTo(t.v) < 0){
-			l.addFirst(t);
+			fils.addFirst(t);
 			return this;
 		}
-		t.l.addFirst(this);
+		t.fils.addFirst(this);
 		return t;
 	}
 
 	public FileBinomiale<T> Decapite(){
-		return new FileBinomiale<T>(l);
+		return new FileBinomiale<T>(fils);
 	}
 
 	public FileBinomiale<T> File(){
@@ -50,8 +50,8 @@ public class TournoiBinomial<T extends Comparable<? super T>>{
 		while(!file.isEmpty()) {
 			t = file.pop();
 			str += t.v + " ";
-			if(!t.l.isEmpty()) {
-				for (TournoiBinomial<T> tb : t.l) {
+			if(!t.fils.isEmpty()) {
+				for (TournoiBinomial<T> tb : t.fils) {
 					file.add(tb);
 				}
 			}

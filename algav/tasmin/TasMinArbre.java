@@ -185,7 +185,7 @@ public class TasMinArbre<T extends Comparable<? super T>> implements ITasMin<T> 
     /**
      * Ajoute un élément au tas
      *
-     * cout <= O(2log(n) )
+     * cout <= O(log(n) )
      *
      * @param cle noeud a ajouté
      * @return le tas courant
@@ -203,7 +203,7 @@ public class TasMinArbre<T extends Comparable<? super T>> implements ITasMin<T> 
      * Ajoute un élément au tas sans percoler (donc l'ordre des éléments
      * correspond à l'ordre d'insertion)
      *
-     * O(log(n))
+     * O(1)
      *
      * @param cle noeuf à ajouter
      */

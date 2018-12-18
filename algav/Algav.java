@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Algav {
@@ -49,7 +51,7 @@ public class Algav {
 			res.consIter(l);
 			long endTime = System.nanoTime();
 			br.close();
-			return (endTime - startTime);
+			return (endTime - startTime)/1000;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -77,7 +79,7 @@ public class Algav {
 			res.consIter(l);
 			long endTime = System.nanoTime();
 			br.close();
-			return (endTime - startTime);
+			return (endTime - startTime)/1000;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -114,26 +116,31 @@ public class Algav {
 	 *              ..etc)
 	 * @param path  Chemin ou on enrengistre les donnees
 	 */
-	public static void writeTime(int temps[], String path) {
+	public static void writeTime(int tempsTas[], int tempsFile[], String path) {
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(path));
-			bw.write(Integer.toString(100));
-			bw.write(",");
-			bw.write(Integer.toString(200));
-			bw.write(",");
-			bw.write(Integer.toString(500));
-			bw.write(",");
-			bw.write(Integer.toString(1000));
-			bw.write(",");
-			bw.write(Integer.toString(5000));
-			bw.write(",");
-			bw.write(Integer.toString(10000));
-			bw.write(",");
-			bw.write(Integer.toString(20000));
-			bw.write(",");
-			bw.write(Integer.toString(50000));
+//			bw.write(Integer.toString(100));
+//			bw.write(",");
+//			bw.write(Integer.toString(200));
+//			bw.write(",");
+//			bw.write(Integer.toString(500));
+//			bw.write(",");
+//			bw.write(Integer.toString(1000));
+//			bw.write(",");
+//			bw.write(Integer.toString(5000));
+//			bw.write(",");
+//			bw.write(Integer.toString(10000));
+//			bw.write(",");
+//			bw.write(Integer.toString(20000));
+//			bw.write(",");
+//			bw.write(Integer.toString(50000));
+//			bw.newLine();
+			for (int i : tempsTas) {
+				bw.write(Integer.toString(i / 5));
+				bw.write(",");
+			}
 			bw.newLine();
-			for (int i : temps) {
+			for (int i : tempsFile) {
 				bw.write(Integer.toString(i / 5));
 				bw.write(",");
 			}
@@ -149,7 +156,7 @@ public class Algav {
 	 * 
 	 * @param path chemin du dossier contenant les cles
 	 */
-	public static void averageConstIterTasMin(String path) {
+	public static int[] averageConstIterTasMin(String path) {
 		File folder = new File(path);
 		int temps[] = new int[8];
 		String route;
@@ -182,7 +189,7 @@ public class Algav {
 				break;
 			}
 		}
-		writeTime(temps, "averageConstIterTasMin.csv");
+		return temps;
 	}
 
 	/**
@@ -191,7 +198,7 @@ public class Algav {
 	 * 
 	 * @param path chemin du dossier contenant les cles
 	 */
-	public static void averageConstIterFileBinomiale(String path) {
+	public static int[] averageConstIterFileBinomiale(String path) {
 		File folder = new File(path);
 		int temps[] = new int[8];
 		String route;
@@ -224,7 +231,7 @@ public class Algav {
 				break;
 			}
 		}
-		writeTime(temps, "averageConstIterFileBinomiale.csv");
+		return temps;
 	}
 
 	/**
@@ -255,7 +262,7 @@ public class Algav {
 			t.union(t2);
 			long endTime = System.nanoTime();
 			br.close();
-			return (endTime - startTime);
+			return (endTime - startTime)/1000;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -285,7 +292,7 @@ public class Algav {
 			l1.union(l2);
 			long endTime = System.nanoTime();
 			br.close();
-			return (endTime - startTime);
+			return (endTime - startTime)/1000;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -299,7 +306,7 @@ public class Algav {
 	 * 
 	 * @param path chemin du dossier contenant les cles
 	 */
-	public static void averageUnionTasMin(String path) {
+	public static int[] averageUnionTasMin(String path) {
 		File folder = new File(path);
 		int temps[] = new int[8];
 		ITasMin<Cle128> t100;
@@ -359,7 +366,7 @@ public class Algav {
 				break;
 			}
 		}
-		writeTime(temps, "averageUnionTasMin.csv");
+		return temps;
 	}
 
 	/**
@@ -369,7 +376,7 @@ public class Algav {
 	 * 
 	 * @param path chemin du dossier contenant les cles
 	 */
-	public static void averageUnionFileBinomiale(String path) {
+	public static int[] averageUnionFileBinomiale(String path) {
 		File folder = new File(path);
 		int temps[] = new int[8];
 		FileBinomiale<Cle128> t100;
@@ -418,13 +425,12 @@ public class Algav {
 				break;
 			}
 		}
-		writeTime(temps, "averageUnionFileBinomiale.csv");
+		return temps;
 	}
 
 	public static List<String> listShak(String path) {
 		File folder = new File(path);
 		String[] tab = folder.list();
-		Arrays.sort(tab);
 		String route;
 		List<String> l = new ArrayList<>();
 		try {
@@ -433,12 +439,17 @@ public class Algav {
 				BufferedReader br = new BufferedReader(new FileReader(route));
 				String sCurrentLine;
 				while ((sCurrentLine = br.readLine()) != null) {
-					if(!l.contains(sCurrentLine)) {
-						l.add(sCurrentLine);	
+					if (!l.contains(sCurrentLine)) {
+						l.add(sCurrentLine);
 					}
 				}
 				br.close();
 			}
+			Collections.sort(l, new Comparator<String>() {
+				public int compare(String t1, String t2) {
+					return t1.compareTo(t2);
+				}
+			});
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -468,15 +479,21 @@ public class Algav {
 		test.supprMin();
 		System.out.println(test);
 		// System.out.println(timeConstIter(args[0]));
-		// averageConstIterTasMin(args[0]);
-		// averageUnionTasMin(args[0]);
-		// averageConstIterFileBinomiale(args[0]);
-		// averageUnionFileBinomiale(args[0]);
 		// System.out.println(MD5.get("Wikipedia, l'encyclopedie libre et gratuite"));
-		List<String> l = listShak(args[0]);
-		for (String str : l) {
-			System.out.print(str + " ");
-		}
+//		List<String> l = listShak(args[0]);
+//		for (String str : l) {
+//			System.out.print(str + " ");
+//		}
+		writeTime(averageConstIterTasMin(args[0]), averageConstIterFileBinomiale(args[0]), "averageConstIter.csv");
+		writeTime(averageUnionTasMin(args[0]), averageUnionFileBinomiale(args[0]), "averageUnion.csv");
+		
+//		FileBinomiale<Integer> l = new FileBinomiale<>();
+//		List<Integer> list = new ArrayList<>();
+//		for (int i = 0; i < 12; i++) {
+//			list.add(i);
+//		}
+//		l.consIter(list);
+//		System.out.println(l);
 	}
 
 }

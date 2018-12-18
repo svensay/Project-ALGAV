@@ -98,11 +98,37 @@ public class FileBinomiale<T extends Comparable<? super T>> {
 	}
 	
 	public void consIter(List<T> cles) {
+		List<TournoiBinomial<T>> l_tmp = new ArrayList<>();
 		for (T c : cles) {
-			TournoiBinomial<T> tmp = new TournoiBinomial<T>(c);
-			this.ajout(tmp);
+			l_tmp.add(new TournoiBinomial<T>(c));
 		}
+		List<TournoiBinomial<T>> res = new ArrayList<>();
+		if(l_tmp.size()%2 == 0) {
+			if((l_tmp.size()/2) % 2 == 0) {
+				res.add(arrangement(l_tmp));
+			} else {
+				res.add(arrangement(l_tmp.subList(0, 2)));
+				res.add(arrangement(l_tmp.subList(2, l_tmp.size())));
+			}
+		} else {
+			res.add(l_tmp.get(0));
+			res.add(arrangement(l_tmp.subList(1, l_tmp.size())));
+		}
+		l = res;
 	}
+	public TournoiBinomial<T> arrangement(List<TournoiBinomial<T>> l_tmp) {
+		if(l_tmp.size() == 1) {
+			return l_tmp.get(0);
+		}
+		if(l_tmp.size() == 0){
+			return null;
+		}
+		return arrangement_fusion(arrangement(l_tmp.subList(0, l_tmp.size()/2)),arrangement(l_tmp.subList(l_tmp.size()/2, l_tmp.size())));
+	}
+	public TournoiBinomial<T> arrangement_fusion(TournoiBinomial<T>t1,TournoiBinomial<T> t2) {
+		return t1.Union2Tid(t2);
+	}
+	
 	public String toString() {
 		String str = "";
 		if(!l.isEmpty()) {
