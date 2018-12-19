@@ -279,7 +279,7 @@ public class TasMinArbre<T extends Comparable<? super T>> implements ITasMin<T> 
      * @return nouveau tas
      */
     @Override
-    public TasMinArbre union(ITasMin<T> tas)
+    public TasMinArbre<T> union(ITasMin<T> tas)
     {
         TasMinArbre<T> res = new TasMinArbre<>();
         ArrayList<T> list = new ArrayList<>(this.getListe());
