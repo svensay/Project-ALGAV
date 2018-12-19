@@ -32,10 +32,10 @@ public class Main {
 
 		// Courbe pour comparer les TasMin(la meilleur structure) et File Binomiale.
 		writeTime(calculerPerfConstIterFileBinomiale(chemin, FileBinomiale.class),
-				calculerPerfConstIterTasMin(chemin, TasMinArbre.class), "averageConsIterFileBinomialeTasMin.csv");
+				calculerPerfConstIterTasMin(chemin, TasMinTableau.class), "averageConsIterFileBinomialeTasMin.csv");
 
 		writeTime(calculerPerfUnionFileBinomiale(chemin, FileBinomiale.class),
-				calculerPerfUnionTasMin(chemin, TasMinArbre.class), "averageUnionFileBinomialeTasMin.csv");
+				calculerPerfUnionTasMin(chemin, TasMinTableau.class), "averageUnionFileBinomialeTasMin.csv");
 	}
 
 	/**
