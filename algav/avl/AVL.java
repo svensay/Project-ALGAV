@@ -1,6 +1,6 @@
 package algav.avl;
 
-public class AVL<T extends Comparable<T>> {
+public class AVL<T extends Comparable<T>, U> {
 
     private class AVLNoeud {
 
@@ -8,10 +8,12 @@ public class AVL<T extends Comparable<T>> {
         private AVLNoeud parent;
         private int profondeur;
         private T cle;
+        private U valeur;
 
-        public AVLNoeud(T cle, AVLNoeud parent, AVLNoeud gauche, AVLNoeud droit)
+        public AVLNoeud(T cle, U valeur, AVLNoeud parent, AVLNoeud gauche, AVLNoeud droit)
         {
             this.cle = cle;
+            this.valeur = valeur;
             this.parent = parent;
             this.filsDroit = droit;
             this.filsGauche = gauche;
@@ -57,7 +59,7 @@ public class AVL<T extends Comparable<T>> {
             while (n != null)
             {
                 facteur = ((n.filsGauche != null) ? n.filsGauche.profondeur : -1) - ((n.filsDroit != null) ? n.filsDroit.profondeur : -1);
-                if (facteur == 2)
+                if (facteur > 1)
                 {
                     if (((n.filsGauche.filsGauche == null) ? -1 : n.filsGauche.filsGauche.profondeur) < ((n.filsGauche.filsDroit == null) ? -1 : n.filsGauche.filsDroit.profondeur))
                     {
@@ -66,7 +68,7 @@ public class AVL<T extends Comparable<T>> {
                     n.rd();
                     break;
                 }
-                else if (facteur == -2)
+                else if (facteur < -1)
                 {
                     if (((n.filsDroit.filsGauche == null) ? -1 : n.filsDroit.filsGauche.profondeur) > ((n.filsDroit.filsDroit == null) ? -1 : n.filsDroit.filsDroit.profondeur))
                     {
@@ -75,13 +77,17 @@ public class AVL<T extends Comparable<T>> {
                     n.rg();
                     break;
                 }
-                n = n.parent;
+                else
+                {
+                    n = n.parent;
+                }
             }
         }
 
         private void rg()
         {
             T copieCle = this.cle;
+            U copieValeur = this.valeur;
 
             AVLNoeud A, C, E;
             A = this.filsGauche;
@@ -90,7 +96,8 @@ public class AVL<T extends Comparable<T>> {
             E = this.filsDroit.filsDroit;
 
             this.cle = this.filsDroit.cle;
-            this.filsGauche = new AVLNoeud(copieCle, this, A, C);
+            this.valeur = this.filsDroit.valeur;
+            this.filsGauche = new AVLNoeud(copieCle, copieValeur, this, A, C);
             this.filsDroit = E;
             if (E != null)
             {
@@ -120,13 +127,15 @@ public class AVL<T extends Comparable<T>> {
         private void rd()
         {
             T copieCle = this.cle;
+            U copieValeur = this.valeur;
             AVLNoeud A, C, E;
             E = this.filsDroit;
             A = this.filsGauche.filsGauche;
             C = this.filsGauche.filsDroit;
 
             this.cle = this.filsGauche.cle;
-            this.filsDroit = new AVLNoeud(copieCle, this, C, E);
+            this.valeur = this.filsGauche.valeur;
+            this.filsDroit = new AVLNoeud(copieCle, copieValeur, this, C, E);
             this.filsGauche = A;
             if (E != null)
             {
@@ -153,59 +162,57 @@ public class AVL<T extends Comparable<T>> {
 
         }
 
-        public AVLNoeud ajouter(T cle)
+        public AVLNoeud ajouter(T cle, U valeur)
         {
             int comp = this.cle.compareTo(cle);
             if (comp > 0)
             {
                 if (this.filsGauche == null)
                 {
-                    this.filsGauche = new AVLNoeud(cle, this, null, null);
-                    this.calculerProfondeur();
+                    this.filsGauche = new AVLNoeud(cle, valeur, this, null, null);
                     this.equilibrer();
+                    this.calculerProfondeur();
                     return this.filsGauche;
                 }
                 else
                 {
-                    return this.filsGauche.ajouter(cle);
+                    return this.filsGauche.ajouter(cle, valeur);
                 }
             }
             else if (comp < 0)
             {
                 if (this.filsDroit == null)
                 {
-                    this.filsDroit = new AVLNoeud(cle, this, null, null);
+                    this.filsDroit = new AVLNoeud(cle, valeur, this, null, null);
                     this.calculerProfondeur();
                     this.equilibrer();
                     return this.filsDroit;
                 }
                 else
                 {
-                    return this.filsDroit.ajouter(cle);
+                    return this.filsDroit.ajouter(cle, valeur);
                 }
             }
             return null;
         }
 
-        public boolean rechercher(T cle)
+        private AVLNoeud getNoeud(T cle) // Pour recherche
         {
             int comp = this.cle.compareTo(cle);
             if (comp == 0)
             {
-                return true;
+                return this;
             }
             if (comp > 0 && this.filsGauche != null)
             {
-                return this.filsGauche.rechercher(cle);
+                return this.filsGauche.getNoeud(cle);
             }
             else if (comp < 0 && this.filsDroit != null)
             {
-                return this.filsDroit.rechercher(cle);
+                return this.filsDroit.getNoeud(cle);
             }
-            else
-            {
-                return false;
-            }
+            return null;
+
         }
 
         public String parcoursInfixe()
@@ -222,29 +229,6 @@ public class AVL<T extends Comparable<T>> {
             }
             return res;
         }
-
-        public String toString()
-        {
-            String s = "{" + this.cle + ":g=";
-            if (this.filsGauche != null)
-            {
-                s += this.filsGauche;
-            }
-            else
-            {
-                s += "NULL";
-            }
-            s += ";d=";
-            if (this.filsDroit != null)
-            {
-                s += this.filsDroit;
-            }
-            else
-            {
-                s += "NULL";
-            }
-            return s += "}";
-        }
     }
 
     private int taille;
@@ -255,28 +239,38 @@ public class AVL<T extends Comparable<T>> {
         this.taille = 0;
     }
 
-    public AVL(T cle)
+    public AVL(T cle, U valeur)
     {
         this.taille = 1;
-        this.racine = new AVLNoeud(cle, null, null, null);
+        this.racine = new AVLNoeud(cle, valeur, null, null, null);
     }
 
-    public void ajouter(T cle)
+    public void ajouter(T cle, U valeur)
     {
         if (this.taille == 0)
         {
-            this.racine = new AVLNoeud(cle, null, null, null);
+            this.racine = new AVLNoeud(cle, valeur, null, null, null);
         }
         else
         {
-            this.racine.ajouter(cle);
+            this.racine.ajouter(cle, valeur);
         }
         this.taille++;
     }
 
     public boolean rechercher(T cle)
     {
-        return this.racine.rechercher(cle);
+        return this.racine.getNoeud(cle) != null;
+    }
+
+    public U getValeur(T cle)
+    {
+        AVLNoeud n = this.racine.getNoeud(cle);
+        if (n == null)
+        {
+            return null;
+        }
+        return n.valeur;
     }
 
     public int getTaille()
