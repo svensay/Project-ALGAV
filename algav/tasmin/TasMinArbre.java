@@ -43,8 +43,9 @@ public class TasMinArbre<T extends Comparable<? super T>> implements ITasMin<T> 
      * @return tas courant
      */
     @Override
-    public TasMinArbre<T> supprMin()
+    public T supprMin()
     {
+        T valeur = (this.racine == null) ? null : this.racine.cle;
         if (this.taille < 3)
         {
             switch (this.taille)
@@ -55,8 +56,6 @@ public class TasMinArbre<T extends Comparable<? super T>> implements ITasMin<T> 
                 case 1:
                     this.racine = null;
                     break;
-                default:
-                    return this;
             }
             this.dernier = this.racine;
             this.taille--;
@@ -94,7 +93,7 @@ public class TasMinArbre<T extends Comparable<? super T>> implements ITasMin<T> 
             this.percolerBas(this.racine);
         }
 
-        return this;
+        return valeur;
     }
 
     /**
@@ -185,7 +184,7 @@ public class TasMinArbre<T extends Comparable<? super T>> implements ITasMin<T> 
     /**
      * Ajoute un élément au tas
      *
-     * cout <= O(log(n) )
+     * cout <= O(2log(n) )
      *
      * @param cle noeud a ajouté
      * @return le tas courant
@@ -203,7 +202,7 @@ public class TasMinArbre<T extends Comparable<? super T>> implements ITasMin<T> 
      * Ajoute un élément au tas sans percoler (donc l'ordre des éléments
      * correspond à l'ordre d'insertion)
      *
-     * O(1)
+     * O(log(n))
      *
      * @param cle noeuf à ajouter
      */
@@ -280,7 +279,7 @@ public class TasMinArbre<T extends Comparable<? super T>> implements ITasMin<T> 
      * @return nouveau tas
      */
     @Override
-    public TasMinArbre<T> union(ITasMin<T> tas)
+    public TasMinArbre union(ITasMin<T> tas)
     {
         TasMinArbre<T> res = new TasMinArbre<>();
         ArrayList<T> list = new ArrayList<>(this.getListe());

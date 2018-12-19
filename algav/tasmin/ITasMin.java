@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface ITasMin<T> {
 
-    public ITasMin<T> supprMin();
+    public T supprMin();
 
     public ITasMin<T> ajout(T cle);
 

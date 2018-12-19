@@ -18,14 +18,15 @@ public class TasMinTableau<T extends Comparable<? super T>> implements ITasMin<T
      * @return tas courant
      */
     @Override
-    public TasMinTableau<T> supprMin()
+    public T supprMin()
     {
         T last = this.array.remove(this.array.size() - 1);
-        this.array.set(0, last);
-
-        this.percolerBas(0);
-
-        return this;
+        if (this.array.size() > 0)
+        {
+            this.array.set(0, last);
+            this.percolerBas(0);
+        }
+        return last;
     }
 
     /**
