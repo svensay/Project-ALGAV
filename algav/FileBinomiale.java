@@ -79,7 +79,7 @@ public class FileBinomiale<T extends Comparable<? super T>> {
 				return f.reste().UFret(this, t2.Union2Tid(t));
 			}
 		}
-		return null;
+		return new FileBinomiale<T>().ajout(t);
 	}
 
 	public FileBinomiale<T> union(FileBinomiale<T> l1) {
@@ -110,6 +110,7 @@ public class FileBinomiale<T extends Comparable<? super T>> {
 				min = i;
 			}
 		}
+		
 		FileBinomiale<T> l1 = l.get(min).Decapite();
 		l.remove(min);
 		l = this.union(l1).l;
@@ -143,11 +144,8 @@ public class FileBinomiale<T extends Comparable<? super T>> {
 	}
 
 	public TournoiBinomial<T> arrangement(List<TournoiBinomial<T>> l_tmp) {
-		if (l_tmp.size() == 1) {
+		if (l_tmp.size() <= 1) {
 			return l_tmp.get(0);
-		}
-		if (l_tmp.size() == 0) {
-			return null;
 		}
 		return arrangement_fusion(arrangement(l_tmp.subList(0, l_tmp.size() / 2)),
 				arrangement(l_tmp.subList(l_tmp.size() / 2, l_tmp.size())));
