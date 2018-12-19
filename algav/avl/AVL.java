@@ -260,7 +260,7 @@ public class AVL<T extends Comparable<T>, U> {
 
     public boolean rechercher(T cle)
     {
-        return this.racine.getNoeud(cle) != null;
+        return this.racine != null && this.racine.getNoeud(cle) != null;
     }
 
     public U getValeur(T cle)
