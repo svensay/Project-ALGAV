@@ -32,29 +32,10 @@ public class Main {
 
 		// Courbe pour comparer les TasMin(la meilleur structure) et File Binomiale.
 		writeTime(calculerPerfConstIterFileBinomiale(chemin, FileBinomiale.class),
-				calculerPerfConstIterTasMin(chemin, TasMinTableau.class), "averageConsIterFileBinomialeTasMin.csv");
+				calculerPerfConstIterTasMin(chemin, TasMinArbre.class), "averageConsIterFileBinomialeTasMin.csv");
 
 		writeTime(calculerPerfUnionFileBinomiale(chemin, FileBinomiale.class),
-				calculerPerfUnionTasMin(chemin, TasMinTableau.class), "averageUnionFileBinomialeTasMin.csv");
-
-		// System.out.println("ConstIter");
-//		afficherTableauCSV(calculerPerfConstIterTasMin(chemin, TasMinArbre.class));
-//		afficherTableauCSV(calculerPerfConstIterTasMin(chemin, TasMinTableau.class));
-//
-//		System.out.println();
-//		System.out.println("union");
-//		afficherTableauCSV(calculerPerfUnionTasMin(chemin, TasMinArbre.class));
-//		afficherTableauCSV(calculerPerfUnionTasMin(chemin, TasMinTableau.class));
-//
-//		System.out.println();
-//		System.out.println("Ajout");
-//		afficherTableauCSV(calculerPerfAjoutTasMin(chemin, TasMinArbre.class));
-//		afficherTableauCSV(calculerPerfAjoutTasMin(chemin, TasMinTableau.class));
-//
-//		System.out.println();
-//		System.out.println("SupprMin :");
-//		afficherTableauCSV(calculerPerfSupprMinTasMin(chemin, TasMinArbre.class));
-//		afficherTableauCSV(calculerPerfSupprMinTasMin(chemin, TasMinTableau.class));
+				calculerPerfUnionTasMin(chemin, TasMinArbre.class), "averageUnionFileBinomialeTasMin.csv");
 	}
 
 	/**
@@ -249,6 +230,7 @@ public class Main {
 			while ((s = br.readLine()) != null) {
 				res.add(new Cle128(s));
 			}
+			br.close();
 		} catch (IOException e) {
 			System.out.println("IOException pour " + path);
 			System.out.println(e.getMessage());
