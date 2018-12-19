@@ -1,16 +1,16 @@
 package algav.avl;
 
-public class AVL<T extends Comparable<T>, U> {
+public class AVL<K extends Comparable<K>, V> {
 
     private class AVLNoeud {
 
         private AVLNoeud filsGauche, filsDroit;
         private AVLNoeud parent;
         private int profondeur;
-        private T cle;
-        private U valeur;
+        private K cle;
+        private V valeur;
 
-        public AVLNoeud(T cle, U valeur, AVLNoeud parent, AVLNoeud gauche, AVLNoeud droit)
+        public AVLNoeud(K cle, V valeur, AVLNoeud parent, AVLNoeud gauche, AVLNoeud droit)
         {
             this.cle = cle;
             this.valeur = valeur;
@@ -86,8 +86,8 @@ public class AVL<T extends Comparable<T>, U> {
 
         private void rg()
         {
-            T copieCle = this.cle;
-            U copieValeur = this.valeur;
+            K copieCle = this.cle;
+            V copieValeur = this.valeur;
 
             AVLNoeud A, C, E;
             A = this.filsGauche;
@@ -126,8 +126,8 @@ public class AVL<T extends Comparable<T>, U> {
 
         private void rd()
         {
-            T copieCle = this.cle;
-            U copieValeur = this.valeur;
+            K copieCle = this.cle;
+            V copieValeur = this.valeur;
             AVLNoeud A, C, E;
             E = this.filsDroit;
             A = this.filsGauche.filsGauche;
@@ -162,17 +162,18 @@ public class AVL<T extends Comparable<T>, U> {
 
         }
 
-        public AVLNoeud ajouter(T cle, U valeur)
+        public AVLNoeud ajouter(K cle, V valeur)
         {
             int comp = this.cle.compareTo(cle);
             if (comp > 0)
             {
                 if (this.filsGauche == null)
                 {
-                    this.filsGauche = new AVLNoeud(cle, valeur, this, null, null);
+                    AVLNoeud gauche = new AVLNoeud(cle, valeur, this, null, null);
+                    this.filsGauche = gauche;
                     this.equilibrer();
                     this.calculerProfondeur();
-                    return this.filsGauche;
+                    return gauche;
                 }
                 else
                 {
@@ -183,10 +184,11 @@ public class AVL<T extends Comparable<T>, U> {
             {
                 if (this.filsDroit == null)
                 {
-                    this.filsDroit = new AVLNoeud(cle, valeur, this, null, null);
+                    AVLNoeud droit = new AVLNoeud(cle, valeur, this, null, null);
+                    this.filsDroit = droit;
                     this.calculerProfondeur();
                     this.equilibrer();
-                    return this.filsDroit;
+                    return droit;
                 }
                 else
                 {
@@ -196,7 +198,7 @@ public class AVL<T extends Comparable<T>, U> {
             return null;
         }
 
-        private AVLNoeud getNoeud(T cle) // Pour recherche
+        private AVLNoeud getNoeud(K cle) // Pour recherche et obtenir une valeur
         {
             int comp = this.cle.compareTo(cle);
             if (comp == 0)
@@ -239,31 +241,56 @@ public class AVL<T extends Comparable<T>, U> {
         this.taille = 0;
     }
 
-    public AVL(T cle, U valeur)
+    public AVL(K cle, V valeur)
     {
         this.taille = 1;
         this.racine = new AVLNoeud(cle, valeur, null, null, null);
     }
 
-    public void ajouter(T cle, U valeur)
+    /**
+     * Ajouter un couple Clé Valeur à l'AVL
+     *
+     * @param cle clé unique à ajouter
+     * @param valeur valeur assoicée
+     * @return true si le couple a été ajouté, false si clé déjà présente
+     */
+    public boolean ajouter(K cle, V valeur)
     {
         if (this.taille == 0)
         {
             this.racine = new AVLNoeud(cle, valeur, null, null, null);
+            this.taille++;
         }
         else
         {
-            this.racine.ajouter(cle, valeur);
+            if (this.racine.ajouter(cle, valeur) == null)
+            {
+                return false;
+            }
+            this.taille++;
         }
-        this.taille++;
+        return true;
     }
 
-    public boolean rechercher(T cle)
+    /**
+     * Rechercher une clé dans l'AVL
+     *
+     * @param cle clé à rechercher
+     * @return true si la clé a été trouvée, sinon false
+     */
+    public boolean rechercher(K cle)
     {
         return this.racine != null && this.racine.getNoeud(cle) != null;
     }
 
-    public U getValeur(T cle)
+    /**
+     * Obtenir la valeur liée à une clée
+     *
+     * @param cle
+     * @return La valeur correspondante à la clé ou null si la clé n'est pas
+     * dans l'AVL
+     */
+    public V getValeur(K cle)
     {
         AVLNoeud n = this.racine.getNoeud(cle);
         if (n == null)
@@ -273,14 +300,14 @@ public class AVL<T extends Comparable<T>, U> {
         return n.valeur;
     }
 
+    /**
+     * Taille de l'arbre
+     *
+     * @return taille
+     */
     public int getTaille()
     {
         return this.taille;
-    }
-
-    public String getArbreString()
-    {
-        return this.racine.toString();
     }
 
     @Override
