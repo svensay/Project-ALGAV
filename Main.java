@@ -1,3 +1,7 @@
+
+import algav.Cle128;
+import algav.FileBinomiale;
+import algav.TournoiBinomial;
 import algav.tasmin.ITasMin;
 import algav.tasmin.TasMinArbre;
 import algav.tasmin.TasMinTableau;
@@ -8,14 +12,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@SuppressWarnings({"unchecked","deprecation","rawtypes"})
+@SuppressWarnings(
+        {
+            "unchecked", "deprecation", "rawtypes"
+        })
 public class Main {
 
-    static HashMap<String, List<String>> fichiers = new HashMap<>();
+    static HashMap<String, List<Cle128>> fichiers = new HashMap<>();
     static int nbJeux = 5;
     static int nbDonnees[] =
     {
-        100, 200, 500, 1000, 5000, 10000, 20000
+        100, 200, 500, 1000, 5000, 10000, 20000, 50000
     };
 
     public static void main(String[] args)
@@ -53,7 +60,7 @@ public class Main {
                 long temps = 0;
                 for (int i = 1; i <= nbJeux; i++)
                 {
-                    ITasMin<String> tas = (ITasMin<String>) c.newInstance();
+                    ITasMin<Cle128> tas = (ITasMin<Cle128>) c.newInstance();
 
                     long start = System.nanoTime();
                     tas.consIter(getLignesFichier(chemin + "jeu_" + i + "_nb_cles_" + nb + ".txt"));
@@ -81,7 +88,7 @@ public class Main {
                 long temps = 0;
                 for (int i = 1; i <= nbJeux; i++)
                 {
-                    ITasMin<String> tas = (ITasMin<String>) c.newInstance();
+                    ITasMin<Cle128> tas = (ITasMin<Cle128>) c.newInstance();
                     tas.consIter(getLignesFichier(chemin + "jeu_" + i + "_nb_cles_" + nb + ".txt"));
 
                     long start = System.nanoTime();
@@ -113,11 +120,11 @@ public class Main {
                 long temps = 0;
                 for (int i = 1; i <= nbJeux; i++)
                 {
-                    ITasMin<String> tas = (ITasMin<String>) c.newInstance();
-                    List<String> liste = getLignesFichier(chemin + "jeu_" + i + "_nb_cles_" + nb + ".txt");
+                    ITasMin<Cle128> tas = (ITasMin<Cle128>) c.newInstance();
+                    List<Cle128> liste = getLignesFichier(chemin + "jeu_" + i + "_nb_cles_" + nb + ".txt");
 
                     long start = System.nanoTime();
-                    for (String cle : liste)
+                    for (Cle128 cle : liste)
                     {
                         tas.ajout(cle);
                     }
@@ -143,10 +150,10 @@ public class Main {
             for (int nb : nbDonnees)
             {
                 long temps = 0;
-                ITasMin<String> tas = (ITasMin<String>) c.newInstance();
+                ITasMin<Cle128> tas = (ITasMin<Cle128>) c.newInstance();
                 for (int i = 1; i <= nbJeux; i++)
                 {
-                    ITasMin<String> tmpTas = (ITasMin<String>) c.newInstance();
+                    ITasMin<Cle128> tmpTas = (ITasMin<Cle128>) c.newInstance();
                     tmpTas.consIter(getLignesFichier(chemin + "jeu_" + i + "_nb_cles_" + nb + ".txt"));
 
                     long start = System.nanoTime();
@@ -164,19 +171,19 @@ public class Main {
         return res;
     }
 
-    public static List<String> getLignesFichier(String path)
+    public static List<Cle128> getLignesFichier(String path)
     {
         if (fichiers.containsKey(path))
         {
             return fichiers.get(path);
         }
-        ArrayList<String> res = new ArrayList<>();
+        ArrayList<Cle128> res = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(path)))
         {
             String s;
             while ((s = br.readLine()) != null)
             {
-                res.add(s);
+                res.add(new Cle128(s));
             }
         } catch (IOException e)
         {
