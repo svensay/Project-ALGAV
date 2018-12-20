@@ -1,3 +1,4 @@
+
 import algav.Cle128;
 import algav.avl.AVL;
 import algav.md5.MD5;
@@ -12,7 +13,7 @@ public class MainAvl {
 
     public static void main(String[] args)
     {
-        List<String> shakespeare = getLignesShakespeare(args[0]);
+        List<String> shakespeare = getLignesShakespeare("/home/maxime/Bureau/Project-ALGAV/Shakespeare/");
 
         long start = System.nanoTime();
         List<String> unique = listeUniqueShakespeare(shakespeare);

@@ -34,7 +34,7 @@ public class Cle128 implements Comparable<Cle128> {
     @Override
     public int compareTo(Cle128 o)
     {
-        return this.cle.compareTo(cle);
+        return this.cle.compareTo(o.cle);
     }
 
 }
